@@ -1,13 +1,54 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
-import FetchPlayers from './components/FetchData';
+import Axios from 'axios';
+import Card from 'react-bootstrap/Card'
 
-function App() {
-  return (
-    <div className="App">
-      <FetchPlayers />
-    </div>
-  );
+export default class FetchData extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+      players: []
+    }
+  }
+  componentDidMount()  {
+    this.fetchPlayers();
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(prevState.players !== this.state.players) {
+  //     this.setState({ players: [] })
+  //     this.fetchPlayers();
+  //   }
+  // }
+
+  fetchPlayers = () => {
+    Axios.get('http://localhost:5000/api/players')
+    .then(res => {
+      this.setState({
+        players: res.data
+      });
+    })
+    .catch(err => console.log(err));
+  }
+  render() {
+    return (
+
+      <>
+      {this.state.players.map((player, index) => (
+  
+      <div key={index}>
+       <Card bg="info" text="white" style={{ width: '18rem' }}>
+        <Card.Header>{player.name}</Card.Header>
+        <Card.Body>
+          <Card.Title>{player.country}</Card.Title>
+          <Card.Text>{player.searches}</Card.Text>
+        </Card.Body>
+      </Card>
+      <br />
+      </div> 
+      ))}
+      </>
+    )
+  }
 }
 
-export default App;

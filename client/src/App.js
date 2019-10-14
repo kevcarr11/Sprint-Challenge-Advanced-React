@@ -1,26 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Axios from 'axios';
+import Card from 'react-bootstrap/Card'
+import DarkModeSwitch from './components/darkModewitch';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class FetchData extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+      players: []
+    }
+  }
+  componentDidMount()  {
+    this.fetchPlayers();
+  }
+
+componentDidUpdate(prevProps, prevState) {
+    if(prevState.players !== this.state.players) {
+      
+      this.fetchPlayers();
+    }
+  }
+  
+
+  fetchPlayers = () => {
+    Axios.get('http://localhost:5000/api/players')
+    .then(res => {
+      this.setState({
+        players: res.data
+      });
+    })
+    .catch(err => console.log(err));
+  }
+  render() {
+    return (
+      
+      <div>
+        <h1>Women's World Cup players ranked by search interest from Google Trends</h1>
+        <DarkModeSwitch />
+
+        <div className="App">
+        {this.state.players.map((player, index) => (
+        <div key={index}>
+        <Card bg="info" text="white" style={{ width: '12rem' }}>
+          <Card.Header>{player.name}</Card.Header>
+          <Card.Body>
+            <Card.Title>{player.country}</Card.Title>
+            <Card.Text>Searches: {player.searches}</Card.Text>
+          </Card.Body>
+        </Card>
+        <br />
+        </div> 
+        ))}
+        </div>
+      </div>
+    )
+  }
 }
 
-export default App;

@@ -15,12 +15,13 @@ export default class FetchData extends Component {
     this.fetchPlayers();
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(prevState.players !== this.state.players) {
-  //     this.setState({ players: [] })
-  //     this.fetchPlayers();
-  //   }
-  // }
+componentDidUpdate(prevProps, prevState) {
+    if(prevState.players !== this.state.players) {
+      
+      this.fetchPlayers();
+    }
+  }
+  
 
   fetchPlayers = () => {
     Axios.get('http://localhost:5000/api/players')
@@ -33,8 +34,9 @@ export default class FetchData extends Component {
   }
   render() {
     return (
-
-      <>
+      
+      <div>
+        <h1>Women's World Cup players ranked by search interest from Google Trends</h1>
         <DarkModeSwitch />
 
         <div className="App">
@@ -51,7 +53,7 @@ export default class FetchData extends Component {
         </div> 
         ))}
         </div>
-      </>
+      </div>
     )
   }
 }

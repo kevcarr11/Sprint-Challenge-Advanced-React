@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Axios from 'axios';
 import Card from 'react-bootstrap/Card'
+import DarkModeSwitch from './components/darkModewitch';
 
 export default class FetchData extends Component {
   constructor(props) {
@@ -34,19 +35,22 @@ export default class FetchData extends Component {
     return (
 
       <>
-      {this.state.players.map((player, index) => (
-  
-      <div key={index}>
-       <Card bg="info" text="white" style={{ width: '18rem' }}>
-        <Card.Header>{player.name}</Card.Header>
-        <Card.Body>
-          <Card.Title>{player.country}</Card.Title>
-          <Card.Text>{player.searches}</Card.Text>
-        </Card.Body>
-      </Card>
-      <br />
-      </div> 
-      ))}
+        <DarkModeSwitch />
+
+        <div className="App">
+        {this.state.players.map((player, index) => (
+        <div key={index}>
+        <Card bg="info" text="white" style={{ width: '12rem' }}>
+          <Card.Header>{player.name}</Card.Header>
+          <Card.Body>
+            <Card.Title>{player.country}</Card.Title>
+            <Card.Text>Searches: {player.searches}</Card.Text>
+          </Card.Body>
+        </Card>
+        <br />
+        </div> 
+        ))}
+        </div>
       </>
     )
   }
